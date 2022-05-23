@@ -1,0 +1,31 @@
+{
+  "name": "fleet-monolith",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "BSD-3-Clause",
+  "scripts": {
+    "copy:assets": "mkdir -p build/www && cp client/index.html build/www",
+    "build:server": "esbuild server/index.ts --bundle --minify --platform=node --target=node16 --external:./node_modules/* --outfile=build/server.js",
+    "build:client": "yarn copy:assets && esbuild client/index.tsx --minify --bundle --outfile=build/www/bundle.js",
+    "build": "NODE_ENV=production yarn build:sever && yarn build:client",
+    "build-watch:server": "esbuild server/index.ts --watch --bundle --platform=node --target=node16 --external:./node_modules/* --outfile=build/server.js",
+    "build-watch:client": "yarn copy:assets && esbuild client/index.tsx --watch --bundle --outfile=build/www/bundle.js",
+    "run-watch:server": "nodemon build/server.js",
+    "dev": "NODE_ENV=development concurrently \"yarn build-watch:server\" \"yarn build-watch:client\" \"yarn run-watch:server\""
+  },
+  "dependencies": {
+    "express": "^4.18.1",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^17.0.35",
+    "@types/react": "^18.0.9",
+    "@types/react-dom": "^18.0.5",
+    "esbuild": "^0.14.39",
+    "nodemon": "^2.0.16",
+    "typescript": "^4.6.4",
+    "concurrently": "^7.2.1"
+  }
+}
